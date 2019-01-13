@@ -24,6 +24,9 @@
       </tr>
     <% end %>
   </tbody>
+  <tr><td colspan="100%">
+    <%= will_paginate @champions, {:link_separator => ' | '} %>
+  </td> </tr>
 </table>
 
 <br>

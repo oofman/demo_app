@@ -1,19 +1,16 @@
 class ChampionsController < ApplicationController
   before_action :set_champion, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :verify_authenticity_token, only: [:index]
+  skip_before_action :verify_authenticity_token, only: [:index]
 
   # GET /champions
   # GET /champions.json
   def index
-    @champions = Champion.order("name ASC")
-
-    if params[:search] && params[:search] != ''
-      @champions = @champions.where("name ILIKE ? ", "%#{params[:search]}%")
-    end
+    @champions =  Champion._get_list_page(params)
 
     respond_to do |format|
         format.html { }
         format.json {
+
           if params[:detail] == 'true'
             _result = []
             @champions.each do |champ|
@@ -21,9 +18,9 @@ class ChampionsController < ApplicationController
               _tmp['tags'] = champ.tags.select('id,name')
               _result.push(_tmp)
             end
-            render json: _result
+            render json: {:info => Champion._get_list_page_stats(params), :data =>_result }
           else
-            render json: @champions
+            render json: {:info => Champion._get_list_page_stats(params), :data =>@champions }
           end
 
         }
