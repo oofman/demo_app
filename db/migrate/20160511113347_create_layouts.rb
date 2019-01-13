@@ -1,4 +1,4 @@
-class CreateLayouts < ActiveRecord::Migration[5.0]
+class CreateLayouts < ActiveRecord::Migration
   def change
     create_table :layouts do |t|
       t.string :name, null: false

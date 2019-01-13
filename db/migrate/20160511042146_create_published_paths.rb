@@ -1,4 +1,4 @@
-class CreatePublishedPaths < ActiveRecord::Migration[5.0]
+class CreatePublishedPaths < ActiveRecord::Migration
   def change
     create_table :published_paths do |t|
       t.string :path, null: false

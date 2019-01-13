@@ -22,15 +22,15 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.string   "action",           null: false
     t.text     "params",           null: false
     t.text     "model_attributes"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "layouts", force: :cascade do |t|
     t.string   "name",       null: false
     t.jsonb    "sections",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "page_versions", force: :cascade do |t|
@@ -39,12 +39,12 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.string   "title"
     t.string   "path"
     t.text     "body"
-    t.jsonb    "doc",            default: "{}",    null: false
+    t.jsonb    "doc",            default: {},      null: false
     t.string   "status",         default: "draft"
     t.datetime "publish_at"
     t.datetime "unpublish_at"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -54,47 +54,51 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.text     "body"
     t.integer  "site_id",                          null: false
     t.integer  "version_number",                   null: false
-    t.jsonb    "doc",            default: "{}",    null: false
+    t.jsonb    "doc",            default: {},      null: false
     t.string   "status",         default: "draft"
     t.datetime "publish_at"
     t.datetime "unpublish_at"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.index ["path", "site_id"], name: "index_pages_on_path_and_site_id", unique: true, using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "pages", ["path", "site_id"], name: "index_pages_on_path_and_site_id", unique: true, using: :btree
 
   create_table "published_paths", force: :cascade do |t|
     t.string   "path",       null: false
     t.integer  "site_id",    null: false
     t.integer  "item_id",    null: false
     t.string   "item_type",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["path", "site_id"], name: "index_published_paths_on_path_and_site_id", unique: true, using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "published_paths", ["path", "site_id"], name: "index_published_paths_on_path_and_site_id", unique: true, using: :btree
 
   create_table "sites", force: :cascade do |t|
     t.string   "key",        null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["key"], name: "index_sites_on_key", unique: true, using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "sites", ["key"], name: "index_sites_on_key", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            null: false
     t.string   "email",           null: false
     t.string   "password_digest", null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "widgets", force: :cascade do |t|
     t.string   "type",       null: false
     t.string   "title"
     t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_foreign_key "changes", "users", name: "changes_user_id_fk", on_delete: :cascade

@@ -1,4 +1,4 @@
-class CreateWidgets < ActiveRecord::Migration[5.0]
+class CreateWidgets < ActiveRecord::Migration
   def change
     create_table :widgets do |t|
       t.string :type, null: false

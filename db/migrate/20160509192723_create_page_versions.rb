@@ -1,4 +1,4 @@
-class CreatePageVersions < ActiveRecord::Migration[5.0]
+class CreatePageVersions < ActiveRecord::Migration
   def change
     create_table :page_versions do |t|
       t.integer :page_id, null: false
