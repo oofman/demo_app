@@ -1,7 +1,8 @@
 class ChampionsController < ApplicationController
   before_action :set_champion, only: [:show, :edit, :update, :destroy]
   #skip_before_action :verify_authenticity_token, only: [ :update, :create, :destroy]
-
+  protect_from_forgery :except => [:create,:update,:destroy]
+  
   # GET /champions
   # GET /champions.json
   def index

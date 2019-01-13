@@ -12,11 +12,12 @@ class ApplicationController < ActionController::Base
 
       encoded_token = (request.headers['X-Boxy-Auth-Token'].present?) ? request.headers['X-Boxy-Auth-Token'].split(' ').last : request.parameters['auth'].split(' ').last
       decoded_token = UserAuth::Token.decode(encoded_token)
-      #@return nil if decoded_token.expired?
+      return nil if decoded_token.expired?
       @current_user = User.find(decoded_token[:id]) rescue nil
+
     else
-    #  @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
-      return false
+      @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+
     end
 
     return @current_user
