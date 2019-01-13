@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Champions</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Tags</th>
+      <th>Created at</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @champions.each do |champion| %>
+      <tr>
+        <td><%= link_to champion.name, edit_champion_path(champion) %></td>
+        <td>
+          <% champion.tags.each do |_tag| %>
+            <%= _tag.name %>
+          <% end %>
+        </td>
+        <td><%= champion.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Champion', new_champion_path, class: "btn btn-primary" %>

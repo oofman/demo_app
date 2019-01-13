@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511113347) do
+ActiveRecord::Schema.define(version: 20190113062153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "champions", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "champions_tags", id: false, force: :cascade do |t|
+    t.integer "champion_id"
+    t.integer "tag_id"
+  end
 
   create_table "changes", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -60,9 +71,8 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.datetime "unpublish_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["path", "site_id"], name: "index_pages_on_path_and_site_id", unique: true, using: :btree
   end
-
-  add_index "pages", ["path", "site_id"], name: "index_pages_on_path_and_site_id", unique: true, using: :btree
 
   create_table "published_paths", force: :cascade do |t|
     t.string   "path",       null: false
@@ -71,17 +81,21 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.string   "item_type",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["path", "site_id"], name: "index_published_paths_on_path_and_site_id", unique: true, using: :btree
   end
-
-  add_index "published_paths", ["path", "site_id"], name: "index_published_paths_on_path_and_site_id", unique: true, using: :btree
 
   create_table "sites", force: :cascade do |t|
     t.string   "key",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["key"], name: "index_sites_on_key", unique: true, using: :btree
   end
 
-  add_index "sites", ["key"], name: "index_sites_on_key", unique: true, using: :btree
+  create_table "tags", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            null: false
@@ -89,9 +103,8 @@ ActiveRecord::Schema.define(version: 20160511113347) do
     t.string   "password_digest", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "widgets", force: :cascade do |t|
     t.string   "type",       null: false

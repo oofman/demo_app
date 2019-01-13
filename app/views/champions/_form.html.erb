@@ -1,0 +1,40 @@
+<%= form_for(champion) do |f| %>
+  <% if champion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(champion.errors.count, "error") %> prohibited this champion from being saved:</h2>
+
+      <ul>
+      <% champion.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control" %>
+  </fieldset>
+
+
+  <fieldset class="form-group">
+    <% @tags.each do |t| %>
+      <%= f.label t.name  %>
+
+      <% @selected = (@selected_tags.include?(t.id)) ? true : false %>
+      <%= f.check_box :tags, {multiple: true, checked: @selected}, t.name,false %>
+
+    <% end %>
+
+  </fieldset>
+
+
+  <fieldset class="form-group">
+    <%= f.submit class: "btn btn-primary" %>
+  </fieldset>
+<% end %>
