@@ -1,6 +1,6 @@
 class ChampionsController < ApplicationController
   before_action :set_champion, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, only: [:index]
+  skip_before_action :verify_authenticity_token, only: [:index, :update, :create, :destroy]
 
   # GET /champions
   # GET /champions.json
@@ -53,7 +53,8 @@ class ChampionsController < ApplicationController
 
     respond_to do |format|
       if @champion.save
-        _tags = Tag.where(:name => params['champion']['tags']).all
+        _tmp_tags = (params['tags'].present?) ? params['tags'] : params['champion']['tags']
+        _tags = Tag.where(:name => _tmp_tags).all
         @champion.tags << _tags
         format.html { redirect_to champions_path, notice: 'Champion was successfully created.' }
         format.json { render :show, status: :created, location: @champion }
@@ -70,9 +71,14 @@ class ChampionsController < ApplicationController
 
     respond_to do |format|
       if @champion.update(champion_params)
-        @champion.tags.delete_all
-        _tags = Tag.where(:name => params['champion']['tags']).all
-        @champion.tags << _tags
+
+        if params['champion']['tags'].present? || params['tags'].present?
+          _tmp_tags = (params['tags'].present?) ? params['tags'] : params['champion']['tags']
+          @champion.tags.delete_all
+          _tags = Tag.where(:name => _tmp_tags).all
+          @champion.tags << _tags
+        end
+
         format.html { redirect_to champions_path, notice: 'Champion was successfully updated.' }
         format.json { render :show, status: :ok, location: @champion }
       else
@@ -85,7 +91,10 @@ class ChampionsController < ApplicationController
   # DELETE /champions/1
   # DELETE /champions/1.json
   def destroy
-    @champion.destroy
+
+    if @champion
+      @champion.destroy
+    end
     respond_to do |format|
       format.html { redirect_to champions_url, notice: 'Champion was successfully destroyed.' }
       format.json { head :no_content }
@@ -95,7 +104,7 @@ class ChampionsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_champion
-    @champion = Champion.find(params[:id])
+    @champion = Champion.find(params[:id]) rescue false
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
