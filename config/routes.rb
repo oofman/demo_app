@@ -8,11 +8,7 @@ Rails.application.routes.draw do
   get "/logout" => "sessions#destroy", as: :logout
 
   resources :champions
-  #resources :widgets
-  #resources :layouts
-  #resources :sites
 
-  #resources :changes, only: [:index, :show]
 
 
 end
