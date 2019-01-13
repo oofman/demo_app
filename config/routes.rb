@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  get "/dashboard" => "home#dashboard"
+  get "/dashboard" => "home#dashboard" , as: :dashboard
 
   get "/login" => "sessions#new", as: :login
   post "/login" => "sessions#create"
