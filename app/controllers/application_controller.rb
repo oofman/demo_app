@@ -7,12 +7,33 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+
+    if request.headers['X-Boxy-Auth-Token'].present? || request.parameters['auth'].present?
+
+      encoded_token = (request.headers['X-Boxy-Auth-Token'].present?) ? request.headers['X-Boxy-Auth-Token'].split(' ').last : request.parameters['auth'].split(' ').last
+      decoded_token = UserAuth::Token.decode(encoded_token)
+      #@return nil if decoded_token.expired?
+      @current_user = User.find(decoded_token[:id]) rescue nil
+    else
+    #  @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+      return false
+    end
+
+    return @current_user
   end
+
   helper_method :current_user
 
   def authenticate
-    redirect_to(login_path) unless current_user
+    respond_to do |format|
+      format.html {
+        redirect_to(login_path) unless current_user
+      }
+      format.json {
+        render json: {:error => 'you are not authorise to access this.'} unless current_user
+      }
+    end
+
   end
 
 end
