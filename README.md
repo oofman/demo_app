@@ -72,3 +72,26 @@ http://railscasts.com/episodes/250-authentication-from-scratch)
 * [Bootstrap 4 for Rails](https://github.com/twbs/bootstrap-rubygem)
 * [Bootstrap 4 Admin Theme](http://www.bootstrapzero.com/bootstrap-template/bootstrap-4-admin-dashboard)
 * [Bootstrap 4 AdminPlus Theme](http://themeforest.net/item/adminplus-premium-bootstrap-4-admin-dashboard/full_screen_preview/14601290)
+
+
+# Build
+
+Angular Elements are used to encapsulate some of the system functionality in reusable components.
+
+To generate a new component run the following command
+
+```shell
+   ng generate component components/[COMPONENT_MODEL]/[COMPONENT_NAME]
+```
+
+For example, to generate the edit-user-favourites component we run:
+
+```shell
+   ng generate component components/user-favourites/edit-user-favourites
+```
+
+To build the application elements run the following command:
+
+```
+   npm run build && npm run package
+```
